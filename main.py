@@ -1,8 +1,8 @@
-# Standard library modules:
-# - secrets:  produces cryptographically secure random numbers (safe for passwords!)
-#             Use this instead of the older "random" module, which is meant for
-#             games/simulations and is guessable.
-# - string:   ready-made collections of characters like digits or letters
+# Standard librarys
+#
+#
+# secrets:  produces cryptographicaly secure random numbers (safer for passwords, random can be guessed, but I don't know how  [lol]  )
+# string:   ready-made collections of characters like digits and letters
 
 import secrets
 import string
@@ -11,45 +11,53 @@ import string
 def generate_password(length: int = 20) -> str:
     """Generate a random password.
 
-    length: how many characters the password should have (default 20).
-    Returns the password as a text string.
+    length: (default 20).
+    Returns password as text string.
     """
 
-    # Refuse tiny passwords so we can still guarantee at least one character
-    # from each category below (4 categories => minimum of 4 positions).
-    if length < 4:
-        raise ValueError("Length must be at least 4")
 
-    # The full pool of characters any password position may come from:
-    # lowercase + uppercase letters, digits, and a set of special symbols.
+    # minimum length of 6 charakters
+    if length < 6:
+        raise ValueError("Length must be at least 6")
+
+    # The full pool of characters 
+    # lower- and uppercase letters, digits, and a few special symbols
     alphabet = (
-        string.ascii_letters          # abc...XYZ
-        + string.digits               # 0123456789
-        + "!@#$%^&*()-_=+[]{};:,.<>?"  # special symbols
+        string.ascii_letters                    # abc  ...  XYZ
+        + string.digits                         # 0123456789
+        + "!@#$%^&*()-_=+[]{};:,.<>?"           # special symbols
     )
 
-    # Problem: picking every character from the pool alone can accidentally
-    # produce a password with NO digits or NO symbols (bad for sites that
-    # demand them). So first lock in one guaranteed character per category...
+    # problem
+    # 
+    # picking every character from the pool alone could 
+    # produce a password with NO digits or symbols
+    # 
+    # !!!  UNSAFE  !!!
+    # 
+    # lock one character per category in
+
+
     required = [
         secrets.choice(string.ascii_lowercase),                        # one lowercase
         secrets.choice(string.ascii_uppercase),                        # one uppercase
         secrets.choice(string.digits),                                 # one digit
-        secrets.choice("!@#$%^&*()-_=+[]{};:,.<>?"),                  # one symbol
+        secrets.choice("!@#$%^&*()-_=+[]{};:,.<>?"),                   # one symbol
     ]
 
-    # ...and fill the remaining positions with random picks from the full pool.
+    # fill remaining positions with SecretS from full pool
+    
+    
     remaining = [secrets.choice(alphabet) for _ in range(length - len(required))]
 
-    # Join guaranteed + random characters together (guaranteed ones are
-    # currently at the front, which looks suspicious -> shuffle next).
+    # add them
+
+
     password = required + remaining
 
-    # Shuffle: rearrange all characters into a truly random order.
-    # This is Fisher-Yates shuffling done with secure randomness:
-    # walk from the end of the list to the beginning, and on each step swap
-    # the current item with a randomly chosen earlier one (randbelow => 0..i).
-    # Doing it backwards ensures every position gets mixed in fairly.
+    # Shuffle
+
+    
     pool = list(password)
     for i in reversed(range(len(pool))):
         j = secrets.randbelow(i + 1)       # random index from 0 up to and including i
