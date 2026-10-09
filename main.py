@@ -1,42 +1,28 @@
-# Standard librarys
-#
-#
 # secrets:  produces cryptographicaly secure random numbers (safer for passwords, random can be guessed, but I don't know how  [lol]  )
 # string:   ready-made collections of characters like digits and letters
 
 import secrets
 import string
 
-
 def generate_password(length: int = 20) -> str:
-    """Generate a random password.
-
-    length: (default 20).
-    Returns password as text string.
-    """
-
-
     # minimum length of 6 charakters
     if length < 6:
         raise ValueError("Length must be at least 6")
 
-    # The full pool of characters 
-    # lower- and uppercase letters, digits, and a few special symbols
+    # full pool 
+    # lower- and uppercase letters, digits, and few special symbols
     alphabet = (
         string.ascii_letters                    # abc  ...  XYZ
         + string.digits                         # 0123456789
         + "!@#$%^&*()-_=+[]{};:,.<>?"           # special symbols
     )
 
-    # problem
-    # 
-    # picking every character from the pool alone could 
-    # produce a password with NO digits or symbols
-    # 
+    # le problem: 
+    # picking every character from the pool alone could produce a password with NO digits or symbols
+    #
     # !!!  UNSAFE  !!!
-    # 
+    #
     # lock one character per category in
-
 
     required = [
         secrets.choice(string.ascii_lowercase),                        # one lowercase
@@ -49,10 +35,7 @@ def generate_password(length: int = 20) -> str:
     
     
     remaining = [secrets.choice(alphabet) for _ in range(length - len(required))]
-
     # add them
-
-
     password = required + remaining
 
     # Shuffle
