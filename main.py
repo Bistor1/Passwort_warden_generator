@@ -27,8 +27,8 @@ def generate_password(length: int = 20) -> str:
     required = [
         secrets.choice(string.ascii_lowercase),                        # one lowercase
         secrets.choice(string.ascii_uppercase),                        # one uppercase
-        secrets.choice(string.digits),                                 # one digit
-        secrets.choice("!@#$%^&*()-_=+[]{};:,.<>?"),                   # one symbol
+        secrets.choice(string.digits),                           # one digit
+        secrets.choice("!@#$%^&*()-_=+[]{};:,.<>?"),             # one symbol
     ]
 
     # fill remaining positions with SecretS from full pool
